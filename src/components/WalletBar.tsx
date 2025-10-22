@@ -3,19 +3,22 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 
-// Render the wallet button only on the client to avoid hydration mismatches
 const WalletMultiButton = dynamic(
   async () => (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
   { ssr: false }
 );
+
+// type-safe helper for web3Modal on window
+type Web3ModalAPI = { open?: () => Promise<void> };
+type Web3ModalWindow = Window & { web3Modal?: Web3ModalAPI };
 
 export function SolanaConnect() {
   return <WalletMultiButton />;
 }
 
 export function EvmConnect() {
-  const open = () => (window as any)?.web3Modal?.open?.();
-  const enabled = !!(window as any)?.web3Modal;
+  const open = () => (window as Web3ModalWindow).web3Modal?.open?.();
+  const enabled = !!(window as Web3ModalWindow).web3Modal;
 
   return (
     <button

@@ -41,10 +41,11 @@ export default function SolanaPayQR() {
       }
 
       setMsg(undefined);
-    } catch (e: any) {
-      setMsg(`Invalid public key(s): ${e?.message ?? 'unknown error'}`);
-    }
-  }, []);
+    } catch (e: unknown) {
+  const message =
+    e instanceof Error ? e.message : typeof e === 'string' ? e : 'unknown error';
+  setMsg(`Invalid public key(s): ${message}`);
+}, []);
 
   return (
     <div className="flex flex-col items-center gap-3">

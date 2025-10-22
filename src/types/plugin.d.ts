@@ -1,11 +1,12 @@
 declare global {
   interface Window {
     Jupiter: {
-      init: (props: any) => void;
+      init: (props: Record<string, unknown>) => void;
       resume: () => void;
       close: () => void;
-      syncProps?: (props: any) => void;
+      syncProps?: (props: Record<string, unknown>) => void;
     };
   }
 }
+
 export {};
