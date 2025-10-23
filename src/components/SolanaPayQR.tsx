@@ -22,8 +22,6 @@ export default function SolanaPayQR() {
     try {
       const recipient = new PublicKey(recipientStr);
       const splToken = new PublicKey(splStr);
-
-      // 🔒 fixed amount: 285,000 FOWLCAT
       const amount = new BigNumber('285000');
 
       const url = encodeURL({
@@ -42,10 +40,10 @@ export default function SolanaPayQR() {
 
       setMsg(undefined);
     } catch (e: unknown) {
-  const message =
-    e instanceof Error ? e.message : typeof e === 'string' ? e : 'unknown error';
-  setMsg(`Invalid public key(s): ${message}`);
-}, []);
+      const message = e instanceof Error ? e.message : typeof e === 'string' ? e : 'unknown error';
+      setMsg(`Invalid public key(s): ${message}`);
+    }
+  }, []);
 
   return (
     <div className="flex flex-col items-center gap-3">
