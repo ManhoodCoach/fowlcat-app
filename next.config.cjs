@@ -3,6 +3,7 @@ const nextConfig = {
   async headers() {
     return [
       {
+        // Lock down everything except /staking
         source: "/((?!staking).*)",
         headers: [
           { key: "X-Frame-Options", value: "SAMEORIGIN" },
@@ -13,6 +14,7 @@ const nextConfig = {
         ]
       },
       {
+        // Allow ONLY fowlcat.com to embed /staking
         source: "/staking/:path*",
         headers: [
           { key: "Content-Security-Policy", value:
@@ -25,4 +27,4 @@ const nextConfig = {
   }
 };
 
-export default nextConfig;
+module.exports = nextConfig;
