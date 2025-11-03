@@ -11,11 +11,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <header className="container" style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          {/* Put your logo at /public/logo-fowlcat.svg (or change the src to your file) */}
-          <img className="logo" src="/logo-fowlcat.svg" alt="FOWLCAT" />
+          {/* Logo served from Arweave/Irys (SVG, 32×32) */}
+          <img
+            className="logo"
+            src="https://arweave.net/6JF4HvcsF68x2zuyRKAsoOrx9QhgERbidlssIQIZ6Jg"
+            alt="FOWLCAT"
+            width={42}
+            height={42}
+          />
           <span className="tag">LIVE</span>
           <div style={{ flex: 1 }} />
-          <a className="btn" href="https://fowlcat.com" rel="noopener">Back to Site</a>
+          <a className="btn" href="https://fowlcat.com" rel="noopener">
+            Back to Site
+          </a>
         </header>
         {children}
       </body>
