@@ -3,7 +3,7 @@ const nextConfig = {
   async headers() {
     return [
       {
-        // Lock down everything except /staking (no external framing)
+        // Lock down everything except /staking
         source: "/((?!staking).*)",
         headers: [
           { key: "X-Frame-Options", value: "SAMEORIGIN" },
