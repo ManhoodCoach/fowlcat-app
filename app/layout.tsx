@@ -1,32 +1,64 @@
 // app/layout.tsx
 import "./globals.css";
+import type { Metadata } from "next";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "FOWLCAT App",
   description: "Stake & Earn FOWLCAT Points",
+  themeColor: "#0b1b34",
+  icons: {
+    icon: [
+      {
+        url: "https://gateway.irys.xyz/6JF4HvcsF68x2zuyRKAsoOrx9QhgERbidlssIQIZ6Jg",
+        type: "image/svg+xml",
+        sizes: "32x32",
+      },
+      {
+        url: "https://gateway.irys.xyz/-X5RuwrEZ5C1r0gFI5Y9w-cwLdN1ze2sm0KjhA7hgRE",
+        type: "image/png",
+        sizes: "32x32",
+      },
+    ],
+    shortcut: [
+      {
+        url: "https://gateway.irys.xyz/6JF4HvcsF68x2zuyRKAsoOrx9QhgERbidlssIQIZ6Jg",
+        type: "image/svg+xml",
+      },
+    ],
+    apple: [
+      {
+        url: "https://gateway.irys.xyz/-X5RuwrEZ5C1r0gFI5Y9w-cwLdN1ze2sm0KjhA7hgRE",
+      },
+    ],
+  },
+  openGraph: {
+    title: "FOWLCAT — Staking",
+    description: "Stake & Earn FOWLCAT Points.",
+    url: "https://app.fowlcat.com/staking",
+    siteName: "FOWLCAT",
+    images: [
+      {
+        url: "https://gateway.irys.xyz/-X5RuwrEZ5C1r0gFI5Y9w-cwLdN1ze2sm0KjhA7hgRE",
+        width: 512,
+        height: 512,
+        alt: "FOWLCAT logo",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary",
+    title: "FOWLCAT — Staking",
+    description: "Stake & Earn FOWLCAT Points.",
+    images: [
+      "https://gateway.irys.xyz/-X5RuwrEZ5C1r0gFI5Y9w-cwLdN1ze2sm0KjhA7hgRE",
+    ],
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>
-        <header className="container" style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          {/* Logo served from Arweave/Irys (SVG, 32×32) */}
-          <img
-            className="logo"
-            src="https://arweave.net/6JF4HvcsF68x2zuyRKAsoOrx9QhgERbidlssIQIZ6Jg"
-            alt="FOWLCAT"
-            width={42}
-            height={42}
-          />
-          <span className="tag">LIVE</span>
-          <div style={{ flex: 1 }} />
-          <a className="btn" href="https://fowlcat.com" rel="noopener">
-            Back to Site
-          </a>
-        </header>
-        {children}
-      </body>
+      <body className="min-h-dvh bg-[#0b1b34] text-white">{children}</body>
     </html>
   );
 }
