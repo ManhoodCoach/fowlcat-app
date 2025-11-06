@@ -1,0 +1,164 @@
+[00:00:02.582] Server  LOG      ✓ Ready in 1735ms
+[00:00:32.621] Server  LOG      ○ Compiling /staking ...
+[00:00:38.285] Server  ERROR    ⨯ ./src/components/ClientPortal.tsx:30:10
+Parsing ecmascript source code failed
+  28 |   );
+  29 | }
+> 30 | mkdir -p src/components/common
+     |          ^^^
+  31 | cat > src/components/common/Tickers.tsx << 'TSX'
+  32 | "use client";
+  33 |
+
+Expected ';', '}' or <eof>
+
+Import traces:
+  Client Component Browser:
+    ./src/components/ClientPortal.tsx [Client Component Browser]
+    ./app/staking/page.tsx [Client Component Browser]
+    ./app/staking/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/ClientPortal.tsx [Client Component SSR]
+    ./app/staking/page.tsx [Client Component SSR]
+    ./app/staking/page.tsx [Server Component]
+
+
+
+./app/staking/page.tsx:5:1
+Module not found: Can't resolve '@/components/common/Tickers'
+  3 | import dynamic from "next/dynamic";
+  4 | import ClientPortal from "@/components/ClientPortal";
+> 5 | import Tickers from "@/components/common/Tickers";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | const WalletMultiButton = dynamic(
+  8 |   async () => (await import("@solana/wallet-adapter-react-ui")).WalletMultiButton,
+
+Import map: aliased to relative './src/components/common/Tickers' inside of [project]/
+
+
+Import traces:
+  Client Component Browser:
+    ./app/staking/page.tsx [Client Component Browser]
+    ./app/staking/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/staking/page.tsx [Client Component SSR]
+    ./app/staking/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:00:42.485] Browser ERROR   uncaughtError: Error: ./src/components/ClientPortal.tsx:30:10
+Parsing ecmascript source code failed
+  28 |   );
+  29 | }
+> 30 | mkdir -p src/components/common
+     |          ^^^
+  31 | cat > src/components/common/Tickers.tsx << 'TSX'
+  32 | "use client";
+  33 |
+
+Expected ';', '}' or <eof>
+
+Import traces:
+  Client Component Browser:
+    ./src/components/ClientPortal.tsx [Client Component Browser]
+    ./app/staking/page.tsx [Client Component Browser]
+    ./app/staking/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/ClientPortal.tsx [Client Component SSR]
+    ./app/staking/page.tsx [Client Component SSR]
+    ./app/staking/page.tsx [Server Component]
+
+
+[00:00:42.843] Browser ERROR   ./src/components/ClientPortal.tsx:30:10
+Parsing ecmascript source code failed
+  28 |   );
+  29 | }
+> 30 | mkdir -p src/components/common
+     |          ^^^
+  31 | cat > src/components/common/Tickers.tsx << 'TSX'
+  32 | "use client";
+  33 |
+
+Expected ';', '}' or <eof>
+
+Import traces:
+  Client Component Browser:
+    ./src/components/ClientPortal.tsx [Client Component Browser]
+    ./app/staking/page.tsx [Client Component Browser]
+    ./app/staking/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/ClientPortal.tsx [Client Component SSR]
+    ./app/staking/page.tsx [Client Component SSR]
+    ./app/staking/page.tsx [Server Component]
+[00:00:42.843] Browser ERROR   ./app/staking/page.tsx:5:1
+Module not found: Can't resolve '@/components/common/Tickers'
+  3 | import dynamic from "next/dynamic";
+  4 | import ClientPortal from "@/components/ClientPortal";
+> 5 | import Tickers from "@/components/common/Tickers";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | const WalletMultiButton = dynamic(
+  8 |   async () => (await import("@solana/wallet-adapter-react-ui")).WalletMultiButton,
+
+Import map: aliased to relative './src/components/common/Tickers' inside of [project]/
+
+Import traces:
+  Client Component Browser:
+    ./app/staking/page.tsx [Client Component Browser]
+    ./app/staking/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/staking/page.tsx [Client Component SSR]
+    ./app/staking/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:00:43.909] Browser ERROR   ./src/components/ClientPortal.tsx:30:10
+Parsing ecmascript source code failed
+  28 |   );
+  29 | }
+> 30 | mkdir -p src/components/common
+     |          ^^^
+  31 | cat > src/components/common/Tickers.tsx << 'TSX'
+  32 | "use client";
+  33 |
+
+Expected ';', '}' or <eof>
+
+Import traces:
+  Client Component Browser:
+    ./src/components/ClientPortal.tsx [Client Component Browser]
+    ./app/staking/page.tsx [Client Component Browser]
+    ./app/staking/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/components/ClientPortal.tsx [Client Component SSR]
+    ./app/staking/page.tsx [Client Component SSR]
+    ./app/staking/page.tsx [Server Component]
+[00:00:43.909] Browser ERROR   ./app/staking/page.tsx:5:1
+Module not found: Can't resolve '@/components/common/Tickers'
+  3 | import dynamic from "next/dynamic";
+  4 | import ClientPortal from "@/components/ClientPortal";
+> 5 | import Tickers from "@/components/common/Tickers";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | const WalletMultiButton = dynamic(
+  8 |   async () => (await import("@solana/wallet-adapter-react-ui")).WalletMultiButton,
+
+Import map: aliased to relative './src/components/common/Tickers' inside of [project]/
+
+Import traces:
+  Client Component Browser:
+    ./app/staking/page.tsx [Client Component Browser]
+    ./app/staking/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/staking/page.tsx [Client Component SSR]
+    ./app/staking/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found

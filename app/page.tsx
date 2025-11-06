@@ -1,2 +1,2 @@
 import { redirect } from "next/navigation";
-export default function Page() { redirect("/staking"); }
+export default function Home() { redirect("/staking"); }

@@ -1,30 +1,26 @@
-import Image from "next/image";
+"use client";
+
+import dynamic from "next/dynamic";
+import ClientPortal from "@/components/ClientPortal";
+import Tickers from "@/components/common/Tickers";
+
+const WalletMultiButton = dynamic(
+  async () => (await import("@solana/wallet-adapter-react-ui")).WalletMultiButton,
+  { ssr: false }
+);
 
 export default function StakingPage() {
   return (
-    <main className="min-h-dvh flex items-center justify-center p-8">
-      <div className="max-w-xl w-full text-center space-y-5">
-        <div className="flex justify-center">
-          <Image
-            src="/fowlcat-logo.png"
-            alt="FOWLCAT"
-            width={560}   // adjust width as you like
-            height={160}  // keep aspect; actual size controlled by CSS below
-            priority
-            className="h-16 w-auto drop-shadow-[0_0_12px_rgba(255,255,0,0.25)]"
-          />
-        </div>
+    <main>
+      <header className="w-full max-w-6xl mx-auto px-4 py-6 flex items-center justify-between">
+        <h1 className="text-2xl md:text-3xl font-black tracking-tight">FOWLCAT Rewards</h1>
+        <WalletMultiButton className="!bg-black !text-yellow-400 !rounded-2xl !px-4 !py-2" />
+      </header>
 
-        <h1 className="text-3xl font-bold tracking-tight">Stake & Earn</h1>
-        <p className="text-white/70">
-          Connect your wallet to start earning <b>FOWLCAT Points</b>.
-        </p>
+      <Tickers />
 
-        <div className="rounded-2xl border border-white/10 p-6 bg-white/5">
-          <p className="text-sm text-white/70">
-            Staking UI mounts here. We’ll wire program + RPC after deploy.
-          </p>
-        </div>
+      <div className="w-full max-w-6xl mx-auto px-4 py-8">
+        <ClientPortal />
       </div>
     </main>
   );
