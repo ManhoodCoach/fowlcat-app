@@ -1,5 +1,3 @@
-export const runtime = "edge"; // optional, faster cold start
-
 export default function StakingPage() {
   return (
     <main className="min-h-dvh flex items-center justify-center p-8">
@@ -14,7 +12,6 @@ export default function StakingPage() {
           Connect your wallet to start earning <b>FOWLCAT Points</b>.
         </p>
         <div className="rounded-2xl border border-white/10 p-6">
-          {/* Placeholder content so you SEE something immediately */}
           <p className="text-sm text-white/60">
             Staking UI mounts here. We’ll wire program + RPC after deploy.
           </p>
