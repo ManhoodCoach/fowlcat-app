@@ -1,10 +1,13 @@
+// app/layout.tsx
 import "./globals.css";
 import type { Metadata } from "next";
+import SolanaProvider from "@/providers/SolanaProvider";
 
 export const metadata: Metadata = {
-  title: "FOWLCAT App",
-  description: "Stake & Earn FOWLCAT Points",
-  themeColor: "#0b1b34", // deep navy
+  metadataBase: new URL("https://app.fowlcat.com"),
+  title: "FOWLCAT App — Staking",
+  description: "Stake & Earn FOWLCAT Points.",
+  themeColor: "#0b1b34",
   icons: {
     icon: [
       {
@@ -26,7 +29,6 @@ export const metadata: Metadata = {
     ],
     apple: [
       {
-        // iOS likes PNG
         url: "https://gateway.irys.xyz/-X5RuwrEZ5C1r0gFI5Y9w-cwLdN1ze2sm0KjhA7hgRE",
       },
     ],
@@ -34,7 +36,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "FOWLCAT — Staking",
     description: "Stake & Earn FOWLCAT Points.",
-    url: "https://app.fowlcat.com/staking",
+    url: "/staking",
     siteName: "FOWLCAT",
     images: [
       {
@@ -53,18 +55,19 @@ export const metadata: Metadata = {
       "https://gateway.irys.xyz/-X5RuwrEZ5C1r0gFI5Y9w-cwLdN1ze2sm0KjhA7hgRE",
     ],
   },
+  // Helps mobile address bars match your theme
+  other: {
+    "color-scheme": "dark",
+  },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      {/* Tailwind-friendly base; swap colors later if you like */}
-      <body className="min-h-dvh bg-[#0b1b34] text-white">
-        {children}
+    <html lang="en" className="scroll-smooth">
+      <body className="min-h-dvh bg-gradient-to-b from-[#0b1b34] to-[#081325] text-white antialiased">
+        <SolanaProvider>
+          {children}
+        </SolanaProvider>
       </body>
     </html>
   );
