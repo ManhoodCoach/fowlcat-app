@@ -1,164 +1,54 @@
-[00:00:02.582] Server  LOG      ✓ Ready in 1735ms
-[00:00:32.621] Server  LOG      ○ Compiling /staking ...
-[00:00:38.285] Server  ERROR    ⨯ ./src/components/ClientPortal.tsx:30:10
-Parsing ecmascript source code failed
-  28 |   );
-  29 | }
-> 30 | mkdir -p src/components/common
-     |          ^^^
-  31 | cat > src/components/common/Tickers.tsx << 'TSX'
-  32 | "use client";
-  33 |
+[00:00:02.408] Server  LOG      ✓ Ready in 1560ms
+[00:00:08.989] Server  LOG      ○ Compiling / ...
+[00:00:12.942] Server  WARN     ⚠ Unsupported metadata themeColor is configured in metadata export in /. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:00:13.310] Server  WARN     ⚠ Unsupported metadata themeColor is configured in metadata export in /. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:00:15.247] Server  WARN     ⚠ Unsupported metadata themeColor is configured in metadata export in /staking. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:00:15.297] Server  WARN    bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
+[00:00:17.126] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:17.388] Browser WARN    Phantom was registered as a Standard Wallet. The Wallet Adapter for Phantom can be removed from your app.
+[00:00:17.389] Browser WARN    StreamMiddleware - Unknown response id "solflare-detect-metamask"
+[00:03:47.607] Server  WARN     ⚠ Unsupported metadata themeColor is configured in metadata export in /staking. Please move it to viewport export instead.
+Read more: https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+[00:03:49.796] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:03:50.692] Browser WARN    Phantom was registered as a Standard Wallet. The Wallet Adapter for Phantom can be removed from your app.
+[00:03:50.692] Browser WARN    StreamMiddleware - Unknown response id "solflare-detect-metamask"
+[00:03:50.692] Browser WARN    Phantom was registered as a Standard Wallet. The Wallet Adapter for Phantom can be removed from your app.
+[00:03:50.693] Browser ERROR   uncaughtError: Error: Hydration failed because the server rendered HTML didn't match the client. As a result this tree will be regenerated on the client. This can happen if a SSR-ed Client Component used:
 
-Expected ';', '}' or <eof>
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
 
-Import traces:
-  Client Component Browser:
-    ./src/components/ClientPortal.tsx [Client Component Browser]
-    ./app/staking/page.tsx [Client Component Browser]
-    ./app/staking/page.tsx [Server Component]
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
 
-  Client Component SSR:
-    ./src/components/ClientPortal.tsx [Client Component SSR]
-    ./app/staking/page.tsx [Client Component SSR]
-    ./app/staking/page.tsx [Server Component]
+https://react.dev/link/hydration-mismatch
 
+  ...
+    <RedirectErrorBoundary router={{...}}>
+      <InnerLayoutRouter url="/staking" tree={[...]} params={{}} cacheNode={{lazyData:null, ...}} segmentPath={[...]} ...>
+        <SegmentViewNode type="page" pagePath="staking/pa...">
+          <SegmentTrieNode>
+          <ClientPageRoot Component={function StakingPage} serverProvidedParams={{...}}>
+            <StakingPage params={Promise} searchParams={Promise}>
+              <main className="mx-auto ma...">
+                <header className="flex items...">
+                  <h1>
+                  <WalletMultiButton>
+                    <BaseWalletMultiButton labels={{...}}>
+                      <div className="wallet-ada...">
+                        <BaseWalletConnectionButton aria-expanded={false} style={{...}} onClick={function onClick} ...>
+                          <Button aria-expanded={false} style={{...}} onClick={function onClick} ...>
+                            <button className="wallet-ada..." disabled={undefined} style={{...}} ...>
++                             <i className="wallet-adapter-button-start-icon">
+-                             Select Wallet
+                              ...
+                        ...
+                ...
+        ...
+      ...
 
-
-./app/staking/page.tsx:5:1
-Module not found: Can't resolve '@/components/common/Tickers'
-  3 | import dynamic from "next/dynamic";
-  4 | import ClientPortal from "@/components/ClientPortal";
-> 5 | import Tickers from "@/components/common/Tickers";
-    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  6 |
-  7 | const WalletMultiButton = dynamic(
-  8 |   async () => (await import("@solana/wallet-adapter-react-ui")).WalletMultiButton,
-
-Import map: aliased to relative './src/components/common/Tickers' inside of [project]/
-
-
-Import traces:
-  Client Component Browser:
-    ./app/staking/page.tsx [Client Component Browser]
-    ./app/staking/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./app/staking/page.tsx [Client Component SSR]
-    ./app/staking/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found
-
-
-[00:00:42.485] Browser ERROR   uncaughtError: Error: ./src/components/ClientPortal.tsx:30:10
-Parsing ecmascript source code failed
-  28 |   );
-  29 | }
-> 30 | mkdir -p src/components/common
-     |          ^^^
-  31 | cat > src/components/common/Tickers.tsx << 'TSX'
-  32 | "use client";
-  33 |
-
-Expected ';', '}' or <eof>
-
-Import traces:
-  Client Component Browser:
-    ./src/components/ClientPortal.tsx [Client Component Browser]
-    ./app/staking/page.tsx [Client Component Browser]
-    ./app/staking/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./src/components/ClientPortal.tsx [Client Component SSR]
-    ./app/staking/page.tsx [Client Component SSR]
-    ./app/staking/page.tsx [Server Component]
-
-
-[00:00:42.843] Browser ERROR   ./src/components/ClientPortal.tsx:30:10
-Parsing ecmascript source code failed
-  28 |   );
-  29 | }
-> 30 | mkdir -p src/components/common
-     |          ^^^
-  31 | cat > src/components/common/Tickers.tsx << 'TSX'
-  32 | "use client";
-  33 |
-
-Expected ';', '}' or <eof>
-
-Import traces:
-  Client Component Browser:
-    ./src/components/ClientPortal.tsx [Client Component Browser]
-    ./app/staking/page.tsx [Client Component Browser]
-    ./app/staking/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./src/components/ClientPortal.tsx [Client Component SSR]
-    ./app/staking/page.tsx [Client Component SSR]
-    ./app/staking/page.tsx [Server Component]
-[00:00:42.843] Browser ERROR   ./app/staking/page.tsx:5:1
-Module not found: Can't resolve '@/components/common/Tickers'
-  3 | import dynamic from "next/dynamic";
-  4 | import ClientPortal from "@/components/ClientPortal";
-> 5 | import Tickers from "@/components/common/Tickers";
-    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  6 |
-  7 | const WalletMultiButton = dynamic(
-  8 |   async () => (await import("@solana/wallet-adapter-react-ui")).WalletMultiButton,
-
-Import map: aliased to relative './src/components/common/Tickers' inside of [project]/
-
-Import traces:
-  Client Component Browser:
-    ./app/staking/page.tsx [Client Component Browser]
-    ./app/staking/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./app/staking/page.tsx [Client Component SSR]
-    ./app/staking/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found
-[00:00:43.909] Browser ERROR   ./src/components/ClientPortal.tsx:30:10
-Parsing ecmascript source code failed
-  28 |   );
-  29 | }
-> 30 | mkdir -p src/components/common
-     |          ^^^
-  31 | cat > src/components/common/Tickers.tsx << 'TSX'
-  32 | "use client";
-  33 |
-
-Expected ';', '}' or <eof>
-
-Import traces:
-  Client Component Browser:
-    ./src/components/ClientPortal.tsx [Client Component Browser]
-    ./app/staking/page.tsx [Client Component Browser]
-    ./app/staking/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./src/components/ClientPortal.tsx [Client Component SSR]
-    ./app/staking/page.tsx [Client Component SSR]
-    ./app/staking/page.tsx [Server Component]
-[00:00:43.909] Browser ERROR   ./app/staking/page.tsx:5:1
-Module not found: Can't resolve '@/components/common/Tickers'
-  3 | import dynamic from "next/dynamic";
-  4 | import ClientPortal from "@/components/ClientPortal";
-> 5 | import Tickers from "@/components/common/Tickers";
-    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  6 |
-  7 | const WalletMultiButton = dynamic(
-  8 |   async () => (await import("@solana/wallet-adapter-react-ui")).WalletMultiButton,
-
-Import map: aliased to relative './src/components/common/Tickers' inside of [project]/
-
-Import traces:
-  Client Component Browser:
-    ./app/staking/page.tsx [Client Component Browser]
-    ./app/staking/page.tsx [Server Component]
-
-  Client Component SSR:
-    ./app/staking/page.tsx [Client Component SSR]
-    ./app/staking/page.tsx [Server Component]
-
-https://nextjs.org/docs/messages/module-not-found

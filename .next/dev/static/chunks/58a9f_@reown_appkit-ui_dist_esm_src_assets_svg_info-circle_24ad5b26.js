@@ -1,0 +1,27 @@
+(globalThis.TURBOPACK || (globalThis.TURBOPACK = [])).push([typeof document === "object" ? document.currentScript : undefined,
+"[project]/node_modules/.pnpm/@reown+appkit-ui@1.7.2_@react-native-async-storage+async-storage@1.24.0_react-native@0._ebc010f50a5a5177208a87be1a59a9eb/node_modules/@reown/appkit-ui/dist/esm/src/assets/svg/info-circle.js [app-client] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "infoCircleSvg",
+    ()=>infoCircleSvg
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$lit$40$3$2e$1$2e$0$2f$node_modules$2f$lit$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/.pnpm/lit@3.1.0/node_modules/lit/index.js [app-client] (ecmascript) <locals>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$lit$2d$html$40$3$2e$3$2e$1$2f$node_modules$2f$lit$2d$html$2f$development$2f$lit$2d$html$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/.pnpm/lit-html@3.3.1/node_modules/lit-html/development/lit-html.js [app-client] (ecmascript)");
+;
+const infoCircleSvg = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$lit$2d$html$40$3$2e$3$2e$1$2f$node_modules$2f$lit$2d$html$2f$development$2f$lit$2d$html$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["svg"]`<svg fill="none" viewBox="0 0 14 15">
+  <path
+    fill="currentColor"
+    d="M6 10.49a1 1 0 1 0 2 0v-2a1 1 0 0 0-2 0v2ZM7 4.49a1 1 0 1 0 0 2 1 1 0 0 0 0-2Z"
+  />
+  <path
+    fill="currentColor"
+    fill-rule="evenodd"
+    d="M7 14.99a7 7 0 1 0 0-14 7 7 0 0 0 0 14Zm5-7a5 5 0 1 1-10 0 5 5 0 0 1 10 0Z"
+    clip-rule="evenodd"
+  />
+</svg>`; //# sourceMappingURL=info-circle.js.map
+}),
+]);
+
+//# sourceMappingURL=58a9f_%40reown_appkit-ui_dist_esm_src_assets_svg_info-circle_24ad5b26.js.map
