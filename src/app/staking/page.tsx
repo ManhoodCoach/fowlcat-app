@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 import { useEffect, useState } from "react";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import { PublicKey } from "@solana/web3.js";
+import { Connection, PublicKey } from "@solana/web3.js";
 import { getAssociatedTokenAddress, getMint } from "@solana/spl-token";
 import { ZBTC_MINT, FOWLCAT_MINT, TREASURY } from "@/zeus/constants";
 import { buildSplTransferTx } from "@/lib/spl";
@@ -19,14 +19,14 @@ const explorerUrl = (sig: string) => {
 };
 
 async function fetchTokenBalance(
-  connection: unknown,
+  connection: Connection,
   owner: PublicKey,
   mint: PublicKey,
   fallbackDecimals = 9
 ): Promise<Bal> {
   try {
     const ata = await getAssociatedTokenAddress(mint, owner, true);
-    const info = await (connection as any).getTokenAccountBalance(ata);
+    const info = await connection.getTokenAccountBalance(ata);
     const raw = BigInt(info.value.amount);
     const decimals = info.value.decimals ?? fallbackDecimals;
     const ui = (Number(raw) / 10 ** decimals).toLocaleString(undefined, {
@@ -34,7 +34,6 @@ async function fetchTokenBalance(
     });
     return { ui, raw, decimals };
   } catch {
-    // ⬇⬇⬇ This line is what was failing; we just replaced 0n with BigInt(0)
     return { ui: "0", raw: BigInt(0), decimals: fallbackDecimals };
   }
 }
@@ -74,15 +73,15 @@ export default function StakingPage() {
 
   // Fetch balances when wallet/decimals change
   useEffect(() => {
-    if (!publicKey) {
+    if (!publicKey || !decimals) {
       setZbtc(null);
       setFowlcat(null);
       return;
     }
     (async () => {
       const [zb, fc] = await Promise.all([
-        fetchTokenBalance(connection, publicKey, ZBTC_MINT, decimals?.zbtc ?? 8),
-        fetchTokenBalance(connection, publicKey, FOWLCAT_MINT, decimals?.fowlcat ?? 9),
+        fetchTokenBalance(connection, publicKey, ZBTC_MINT, decimals.zbtc ?? 8),
+        fetchTokenBalance(connection, publicKey, FOWLCAT_MINT, decimals.fowlcat ?? 9),
       ]);
       setZbtc(zb);
       setFowlcat(fc);
@@ -90,26 +89,21 @@ export default function StakingPage() {
   }, [publicKey, connection, decimals]);
 
   const onSoftLock = async () => {
-    if (!publicKey || !amt || !agree) return;
+    if (!publicKey || !amt || !agree || !decimals) return;
     try {
       setBusy(true);
-      const dec = decimals?.fowlcat ?? 9;
+      const dec = decimals.fowlcat ?? 9;
       const parsed = Number(amt);
       if (!isFinite(parsed) || parsed <= 0) throw new Error("Invalid amount");
       const raw = BigInt(Math.round(parsed * 10 ** dec));
 
-      const tx = await buildSplTransferTx(
-        connection as any,
-        publicKey,
-        TREASURY,
-        FOWLCAT_MINT,
-        raw
-      );
+      const tx = await buildSplTransferTx(connection, publicKey, TREASURY, FOWLCAT_MINT, raw);
       const sig = await sendTransaction(tx, connection);
       setLastSig(sig);
       setAmt("");
-    } catch (e: any) {
-      alert(`Transfer failed: ${e?.message || e}`);
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : String(e);
+      alert(`Transfer failed: ${msg}`);
     } finally {
       setBusy(false);
     }
