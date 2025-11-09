@@ -2,10 +2,11 @@
 
 export const dynamic = "force-dynamic";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import { PublicKey } from "@solana/web3.js";
+import { PublicKey, type Connection } from "@solana/web3.js";
 import { getAssociatedTokenAddress, getMint } from "@solana/spl-token";
 import { ZBTC_MINT, FOWLCAT_MINT, TREASURY } from "@/zeus/constants";
 import { buildSplTransferTx } from "@/lib/spl";
@@ -19,7 +20,7 @@ const explorerUrl = (sig: string) => {
 };
 
 async function fetchTokenBalance(
-  connection: any,
+  connection: Connection,
   owner: PublicKey,
   mint: PublicKey,
   fallbackDecimals = 9
@@ -59,12 +60,6 @@ export default function StakingPage() {
   const [agree, setAgree] = useState(false);
   const [busy, setBusy] = useState(false);
   const [lastSig, setLastSig] = useState<string | null>(null);
-
-  // NEW: client-only flag to avoid hydration mismatch with WalletMultiButton
-  const [isClient, setIsClient] = useState(false);
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
 
   // Fetch mint decimals once
   useEffect(() => {
@@ -107,8 +102,9 @@ export default function StakingPage() {
       const sig = await sendTransaction(tx, connection);
       setLastSig(sig);
       setAmt("");
-    } catch (e: any) {
-      alert(`Transfer failed: ${e?.message || e}`);
+    } catch (e: unknown) {
+      const message = e instanceof Error ? e.message : String(e);
+      alert(`Transfer failed: ${message}`);
     } finally {
       setBusy(false);
     }
@@ -118,10 +114,13 @@ export default function StakingPage() {
     <main className="min-h-dvh flex flex-col items-center justify-start sm:justify-center bg-gradient-to-b from-[#0b1b34] to-[#050915] text-white">
       {/* BIG HERO HEADER */}
       <div className="w-full flex flex-col items-center text-center mt-10 sm:mt-16">
-        <img
+        <Image
           src="/fowlcat-logo.png"
           alt="FOWLCAT"
+          width={512}
+          height={192}
           className="h-44 sm:h-44 w-auto drop-shadow-[0_0_40px_rgba(255,255,0,0.9)]"
+          priority
         />
         <p className="mt-4 text-base sm:text-lg text-yellow-200 tracking-wide">
           Stake • Earn • Rise with the Clawmunity
@@ -131,7 +130,7 @@ export default function StakingPage() {
       <div className="w-full max-w-4xl px-4 py-8 sm:px-6 sm:py-10 space-y-8">
         {/* Header with wallet button */}
         <header className="flex items-center justify-end">
-          {isClient && <WalletMultiButton />}
+          <WalletMultiButton />
         </header>
 
         {/* Centered hero text */}
