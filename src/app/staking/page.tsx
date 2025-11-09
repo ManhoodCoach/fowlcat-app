@@ -2,11 +2,10 @@
 
 export const dynamic = "force-dynamic";
 
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import { PublicKey, type Connection } from "@solana/web3.js";
+import { PublicKey } from "@solana/web3.js";
 import { getAssociatedTokenAddress, getMint } from "@solana/spl-token";
 import { ZBTC_MINT, FOWLCAT_MINT, TREASURY } from "@/zeus/constants";
 import { buildSplTransferTx } from "@/lib/spl";
@@ -20,14 +19,14 @@ const explorerUrl = (sig: string) => {
 };
 
 async function fetchTokenBalance(
-  connection: Connection,
+  connection: unknown,
   owner: PublicKey,
   mint: PublicKey,
   fallbackDecimals = 9
 ): Promise<Bal> {
   try {
     const ata = await getAssociatedTokenAddress(mint, owner, true);
-    const info = await connection.getTokenAccountBalance(ata);
+    const info = await (connection as any).getTokenAccountBalance(ata);
     const raw = BigInt(info.value.amount);
     const decimals = info.value.decimals ?? fallbackDecimals;
     const ui = (Number(raw) / 10 ** decimals).toLocaleString(undefined, {
@@ -35,7 +34,8 @@ async function fetchTokenBalance(
     });
     return { ui, raw, decimals };
   } catch {
-    return { ui: "0", raw: 0n, decimals: fallbackDecimals };
+    // ⬇⬇⬇ This line is what was failing; we just replaced 0n with BigInt(0)
+    return { ui: "0", raw: BigInt(0), decimals: fallbackDecimals };
   }
 }
 
@@ -98,13 +98,18 @@ export default function StakingPage() {
       if (!isFinite(parsed) || parsed <= 0) throw new Error("Invalid amount");
       const raw = BigInt(Math.round(parsed * 10 ** dec));
 
-      const tx = await buildSplTransferTx(connection, publicKey, TREASURY, FOWLCAT_MINT, raw);
+      const tx = await buildSplTransferTx(
+        connection as any,
+        publicKey,
+        TREASURY,
+        FOWLCAT_MINT,
+        raw
+      );
       const sig = await sendTransaction(tx, connection);
       setLastSig(sig);
       setAmt("");
-    } catch (e: unknown) {
-      const message = e instanceof Error ? e.message : String(e);
-      alert(`Transfer failed: ${message}`);
+    } catch (e: any) {
+      alert(`Transfer failed: ${e?.message || e}`);
     } finally {
       setBusy(false);
     }
@@ -114,13 +119,10 @@ export default function StakingPage() {
     <main className="min-h-dvh flex flex-col items-center justify-start sm:justify-center bg-gradient-to-b from-[#0b1b34] to-[#050915] text-white">
       {/* BIG HERO HEADER */}
       <div className="w-full flex flex-col items-center text-center mt-10 sm:mt-16">
-        <Image
+        <img
           src="/fowlcat-logo.png"
           alt="FOWLCAT"
-          width={512}
-          height={192}
           className="h-44 sm:h-44 w-auto drop-shadow-[0_0_40px_rgba(255,255,0,0.9)]"
-          priority
         />
         <p className="mt-4 text-base sm:text-lg text-yellow-200 tracking-wide">
           Stake • Earn • Rise with the Clawmunity
