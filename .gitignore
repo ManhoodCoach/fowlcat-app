@@ -1,8 +1,19 @@
-.anchor
+# OS / editor
 .DS_Store
-target
-**/*.rs.bk
+
+# build / deps
 node_modules
+.next
+target
 test-ledger
 .yarn
+
+# local env
 .env.local
+
+# rust / anchor
+**/*.rs.bk
+.anchor
+
+# local artifacts (do not commit)
+fowlcat-app
