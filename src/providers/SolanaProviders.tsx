@@ -5,7 +5,6 @@ import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import {
   PhantomWalletAdapter,
   SolflareWalletAdapter,
-  BackpackWalletAdapter,
 } from "@solana/wallet-adapter-wallets";
 import "@solana/wallet-adapter-react-ui/styles.css";
 
@@ -15,10 +14,11 @@ export default function SolanaProvider({ children }: { children: ReactNode }) {
     process.env.NEXT_PUBLIC_RPC_URL || // fallback, if you used this earlier
     "https://api.mainnet-beta.solana.com";
 
-  const wallets = useMemo(
-    () => [new PhantomWalletAdapter(), new SolflareWalletAdapter(), new BackpackWalletAdapter()],
-    []
-  );
+ const wallets = useMemo(
+  () => [new PhantomWalletAdapter(), new SolflareWalletAdapter()],
+  []
+);
+
 
   return (
     <ConnectionProvider endpoint={endpoint}>
