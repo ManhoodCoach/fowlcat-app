@@ -1,4 +1,6 @@
 "use client";
+
+
 import { useEffect, useMemo, useState } from "react";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
@@ -10,9 +12,10 @@ import { getReferrer } from "@/lib/referrals";
 
 type Bal = { ui: string; raw: bigint; decimals: number };
 
-async function fetchTokenBalance(
-  connection: any, owner: PublicKey, mint: PublicKey, fallbackDecimals = 9
-): Promise<Bal> {
+const USDC_MINT = new PublicKey("EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
+const SOL_MINT = new PublicKey("So11111111111111111111111111111111111111112");
+
+async function fetchTokenBalance(connection: any, owner: PublicKey, mint: PublicKey, fallbackDecimals = 9): Promise<Bal> {
   try {
     const ata = await getAssociatedTokenAddress(mint, owner, true);
     const info = await connection.getTokenAccountBalance(ata);
@@ -38,21 +41,32 @@ function Card({ title, value, sub }: { title: string; value: string; sub?: strin
 export default function StakingPage() {
   const { connection } = useConnection();
   const { publicKey, sendTransaction } = useWallet();
+
+  // Default mints for the Jupiter portion (preloaded to FOWLCAT)
+  const [inputMint, setInputMint] = useState<PublicKey>(SOL_MINT);
+  const [outputMint, setOutputMint] = useState<PublicKey>(FOWLCAT_MINT);
+
   const [zbtc, setZbtc] = useState<Bal | null>(null);
   const [fowlcat, setFowlcat] = useState<Bal | null>(null);
   const [amt, setAmt] = useState("");
   const [agree, setAgree] = useState(false);
   const [busy, setBusy] = useState(false);
+
   const referrer = useMemo(getReferrer, []);
 
   useEffect(() => {
-    if (!publicKey) { setZbtc(null); setFowlcat(null); return; }
+    if (!publicKey) {
+      setZbtc(null);
+      setFowlcat(null);
+      return;
+    }
     (async () => {
       const [zb, fc] = await Promise.all([
         fetchTokenBalance(connection, publicKey, ZBTC_MINT, 8),
         fetchTokenBalance(connection, publicKey, FOWLCAT_MINT, 9),
       ]);
-      setZbtc(zb); setFowlcat(fc);
+      setZbtc(zb);
+      setFowlcat(fc);
     })();
   }, [publicKey, connection]);
 
@@ -65,7 +79,6 @@ export default function StakingPage() {
       if (raw <= 0n) throw new Error("Invalid amount");
       const tx = await buildSplTransferTx(connection, publicKey, TREASURY, FOWLCAT_MINT, raw);
       const sig = await sendTransaction(tx, connection);
-      // naive toast
       alert(`Soft lock submitted!\nSignature:\n${sig}`);
       setAmt("");
     } catch (e: any) {
@@ -74,6 +87,13 @@ export default function StakingPage() {
       setBusy(false);
     }
   };
+
+  // Jupiter preload: SOL -> FOWLCAT (output)
+  const jupSrc = useMemo(() => {
+    // If you want USDC -> FOWLCAT as default instead, change SOL to USDC here.
+    // Example: `https://jup.ag/swap/USDC-${outputMint.toBase58()}`
+    return `https://jup.ag/swap/SOL-${outputMint.toBase58()}`;
+  }, [outputMint]);
 
   return (
     <main className="mx-auto max-w-4xl p-6 space-y-8">
@@ -104,16 +124,16 @@ export default function StakingPage() {
           {/* Jupiter Swap */}
           <section className="rounded-2xl border p-4 space-y-3">
             <h2 className="text-lg font-medium">Swap into $FOWLCAT</h2>
-            <p className="text-sm opacity-80">
-              Swap SOL/USDC → FOWLCAT without leaving this page. (Referral routing can be added later.)
-            </p>
+            <p className="text-sm opacity-80">Swap SOL/USDC → FOWLCAT without leaving this page. (Referral routing can be added later.)</p>
+
+            {/* Optional: keep these for future wiring; harmless today */}
+            <div className="hidden">
+              <button onClick={() => { setInputMint(SOL_MINT); setOutputMint(FOWLCAT_MINT); }}>Preset: SOL → FOWLCAT</button>
+              <button onClick={() => { setInputMint(USDC_MINT); setOutputMint(FOWLCAT_MINT); }}>Preset: USDC → FOWLCAT</button>
+            </div>
+
             <div className="rounded-xl overflow-hidden">
-              <iframe
-                src="https://jup.ag/swap/SOL-FOWLCAT"  /* adjust pair symbol if needed */
-                width="100%"
-                height="460"
-                style={{ border: "none", borderRadius: 16 }}
-              />
+              <iframe src={jupSrc} width="100%" height="460" style={{ border: "none", borderRadius: 16 }} />
             </div>
           </section>
 
@@ -121,12 +141,10 @@ export default function StakingPage() {
           <section className="rounded-2xl border p-4 space-y-3">
             <h2 className="text-lg font-medium">Ecosystem Actions</h2>
             <div className="grid sm:grid-cols-2 gap-2">
-              <a className="rounded-xl border px-4 py-3 text-center hover:bg-white/10 transition"
-                 href="https://zeusnetwork.xyz/apollo" target="_blank" rel="noreferrer">
+              <a className="rounded-xl border px-4 py-3 text-center hover:bg-white/10 transition" href="https://zeusnetwork.xyz/apollo" target="_blank" rel="noreferrer">
                 Get zBTC (APOLLO)
               </a>
-              <a className="rounded-xl border px-4 py-3 text-center hover:bg-white/10 transition"
-                 href="https://btcsol.co" target="_blank" rel="noreferrer">
+              <a className="rounded-xl border px-4 py-3 text-center hover:bg-white/10 transition" href="https://btcsol.co" target="_blank" rel="noreferrer">
                 Stake SOL → Earn zBTC (btcSOL)
               </a>
             </div>
@@ -136,21 +154,11 @@ export default function StakingPage() {
           <section className="rounded-2xl border p-4 space-y-3">
             <h2 className="text-lg font-medium">Lock FOWLCAT (Soft Vault)</h2>
             <p className="text-sm opacity-80">
-              Lock FOWLCAT to the Treasury to qualify for points, boosts, airdrops, and revenue-share events.
-              This sends tokens to the project treasury. Withdrawals are processed by the team (until the on-chain program is live).
+              Lock FOWLCAT to the Treasury to qualify for points, boosts, airdrops, and revenue-share events. This sends tokens to the project treasury. Withdrawals are processed by the team (until the on-chain program is live).
             </p>
             <div className="flex flex-col sm:flex-row gap-3 items-start">
-              <input
-                className="flex-1 rounded-xl border px-3 py-2 bg-transparent"
-                placeholder="Amount (FOWLCAT)"
-                value={amt}
-                onChange={(e) => setAmt(e.target.value)}
-              />
-              <button
-                onClick={onSoftLock}
-                disabled={busy || !agree || !amt}
-                className="rounded-2xl px-4 py-2 border hover:bg-white/10 transition"
-              >
+              <input className="flex-1 rounded-xl border px-3 py-2 bg-transparent" placeholder="Amount (FOWLCAT)" value={amt} onChange={(e) => setAmt(e.target.value)} />
+              <button onClick={onSoftLock} disabled={busy || !agree || !amt} className="rounded-2xl px-4 py-2 border hover:bg-white/10 transition">
                 {busy ? "Locking..." : "Lock to Treasury"}
               </button>
             </div>
@@ -158,9 +166,7 @@ export default function StakingPage() {
               <input type="checkbox" checked={agree} onChange={(e) => setAgree(e.target.checked)} />
               I understand this sends my FOWLCAT to the project treasury and agree to the terms.
             </label>
-            <p className="text-xs opacity-60">
-              Coming soon: On-chain staking program for permissionless withdraw/claim.
-            </p>
+            <p className="text-xs opacity-60">Coming soon: On-chain staking program for permissionless withdraw/claim.</p>
           </section>
         </>
       )}
